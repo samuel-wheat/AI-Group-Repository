@@ -1,0 +1,24 @@
+** Solution Steps (for Debian/Ubuntu-based systems)
+Follow these steps to correctly add the Docker repository and install the packages:
+Update existing package lists and install necessary dependencies: **
+      sudo apt-get update
+      sudo apt-get install ca-certificates curl gnupg lsb-release
+
+** Add Docker's official GPG key: **
+      sudo mkdir -p /etc/apt/keyrings
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+      sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+** Set up the Docker stable repository:
+The $(lsb_release -cs) command in the script below automatically finds your distribution's codename. If you are using a derivative distribution (like Linux Mint or 
+  elementary OS) and this command outputs a codename not supported by Docker (e.g., 'hera' or 'sylvia'), you may need to replace it with the codename of the parent 
+  Ubuntu/Debian LTS release (e.g., 'bionic' or 'bookworm'). **
+      echo \
+          "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+          $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+** Update package lists again (to include the new Docker packages): **
+      sudo apt-get update
+
+** Install Docker Engine, CLI, containerd, and plugins: **
+      sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
